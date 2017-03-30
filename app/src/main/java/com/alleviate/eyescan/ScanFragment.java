@@ -9,6 +9,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -50,6 +51,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -76,7 +78,7 @@ public class ScanFragment extends Fragment
     /**
      * Tag for the {@link Log}.
      */
-    private static final String TAG = "Camera2BasicFragment";
+    private static final String TAG = "EyeScan";
 
     /**
      * Camera state: Showing camera preview.
@@ -419,7 +421,17 @@ public class ScanFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+
+        Calendar cal = Calendar.getInstance();
+        String time_filename = cal.getTime().toString();
+
+        SharedPreferences spf = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor spf_edit = spf.edit();
+
+        spf_edit.putString("File_Name", time_filename);
+        spf_edit.commit();
+
+        mFile = new File(getActivity().getExternalFilesDir(null), time_filename+".jpg");
     }
 
     @Override
