@@ -2,6 +2,7 @@ package com.alleviate.eyescan;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -99,6 +100,9 @@ public class ViewFragment extends Fragment {
                 getResizedBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
 
                 Toast.makeText(getActivity(),"File Comperessed...",Toast.LENGTH_SHORT).show();
+
+                Intent in = new Intent(getActivity(), RequestActivity.class);
+                getActivity().startActivity(in);
             }
         });
 
@@ -133,7 +137,7 @@ public class ViewFragment extends Fragment {
             resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
             out.flush();
             out.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
