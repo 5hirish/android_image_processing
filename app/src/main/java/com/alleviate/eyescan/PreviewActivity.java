@@ -1,11 +1,14 @@
 package com.alleviate.eyescan;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -16,20 +19,24 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
 public class PreviewActivity extends AppCompatActivity {
 
     Bitmap bitmap;
+    final int CROP_PIC_REQUEST_CODE = 1;
+    ImageView img_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
-        ImageView img_view = (ImageView) findViewById(R.id.eye_view);
-        Button scan = (Button) findViewById(R.id.dummy_button);
+        img_view = (ImageView) findViewById(R.id.eye_view);
+        Button scan = (Button) findViewById(R.id.button_scan);
+        Button crop = (Button) findViewById(R.id.button_crop);
 
         SharedPreferences spf = getSharedPreferences("Iris_Path", Context.MODE_PRIVATE);
 
@@ -41,6 +48,37 @@ public class PreviewActivity extends AppCompatActivity {
         Log.d("Path", ""+time_filename);
 
         bitmap = BitmapFactory.decodeFile(time_filename);
+
+        Bitmap scaledBitmap = scale_bitmap(bitmap);
+        // Apply the scaled bitmap
+        img_view.setImageBitmap(scaledBitmap);
+
+        crop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Uri img_uri = getImageUri(getApplicationContext(), bitmap);
+                doCrop(img_uri);
+            }
+        });
+
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getResizedBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+
+                Toast.makeText(getApplicationContext(),"File Compressed...",Toast.LENGTH_SHORT).show();
+
+                Intent in = new Intent(getApplicationContext(), RequestActivity.class);
+                startActivity(in);
+            }
+        });
+
+    }
+
+    private Bitmap scale_bitmap(Bitmap bitmap) {
+
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
@@ -60,24 +98,39 @@ public class PreviewActivity extends AppCompatActivity {
         matrix.postScale(scale, scale);
 
         // Create a new bitmap and convert it to a format understood by the ImageView
-        final Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
 
-        // Apply the scaled bitmap
-        img_view.setImageBitmap(scaledBitmap);
+        return scaledBitmap;
+    }
 
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void doCrop(Uri picUri) {
+        try {
 
-                getResizedBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
 
-                Toast.makeText(getApplicationContext(),"File Comperessed...",Toast.LENGTH_SHORT).show();
+            cropIntent.setDataAndType(picUri, "image/*");
+            cropIntent.putExtra("crop", "true");
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            cropIntent.putExtra("outputX", 128);
+            cropIntent.putExtra("outputY", 128);
+            cropIntent.putExtra("return-data", true);
+            startActivityForResult(cropIntent, CROP_PIC_REQUEST_CODE);
+        }
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            // display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
-                Intent in = new Intent(getApplicationContext(), RequestActivity.class);
-                startActivity(in);
-            }
-        });
-
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
@@ -115,6 +168,20 @@ public class PreviewActivity extends AppCompatActivity {
 
         bm.recycle();
         return resizedBitmap;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CROP_PIC_REQUEST_CODE) {
+            if (data != null) {
+                Bundle extras = data.getExtras();
+                bitmap = extras.getParcelable("data");
+                img_view.setImageBitmap(scale_bitmap(bitmap));
+            }
+        }
+
     }
 
 }

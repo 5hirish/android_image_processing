@@ -32,7 +32,15 @@
             tools:ignore="UselessParent">
 
             <Button
-                android:id="@+id/dummy_button"
+                android:id="@+id/button_crop"
+                android:layout_width="0dp"
+                android:textColor="#000"
+                android:background="#FFF"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="Crop" />
+            <Button
+                android:id="@+id/button_scan"
                 android:layout_width="0dp"
                 android:textColor="#000"
                 android:background="#FFF"
