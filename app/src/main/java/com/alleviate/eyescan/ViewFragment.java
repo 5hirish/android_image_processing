@@ -13,9 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.zip.Inflater;
 
 
@@ -38,6 +42,8 @@ public class ViewFragment extends Fragment {
         return fragment;
     }
 
+    Bitmap bitmap;
+    ProgressBar upload_bar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +53,7 @@ public class ViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view, container, false);
 
         ImageView img_view = (ImageView) view.findViewById(R.id.eye_view);
+        Button scan = (Button) view.findViewById(R.id.dummy_button);
 
         SharedPreferences spf = getActivity().getPreferences(Context.MODE_PRIVATE);
 
@@ -57,16 +64,10 @@ public class ViewFragment extends Fragment {
 
         Log.d("Path", ""+mFile.getAbsolutePath());
 
-        String path = "/storage/emulated/0/Android/data/com.alleviate.eyescan/files/1491020474164.jpg";
+        upload_bar = new ProgressBar(getActivity());
+        upload_bar.setVisibility(View.INVISIBLE);
 
-                /*
-
-                getFragmentManager().beginTransaction()
-                            .replace(R.id.container, ViewFragment.newInstance())
-                            .commit();
-                 */
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
+        bitmap = BitmapFactory.decodeFile(mFile.getAbsolutePath());
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
@@ -86,12 +87,58 @@ public class ViewFragment extends Fragment {
         matrix.postScale(scale, scale);
 
         // Create a new bitmap and convert it to a format understood by the ImageView
-        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        final Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
 
         // Apply the scaled bitmap
         img_view.setImageBitmap(scaledBitmap);
 
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getResizedBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+
+                Toast.makeText(getActivity(),"File Comperessed...",Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+
+
+        File file = new File(getActivity().getExternalFilesDir(null), "scan_img.jpg");
+
+        if (file.exists()){
+
+            file.delete();
+        }
+
+        try {
+
+            FileOutputStream out = new FileOutputStream(file);
+            resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
+            out.flush();
+            out.close();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        bm.recycle();
+        return resizedBitmap;
+    }
 }
