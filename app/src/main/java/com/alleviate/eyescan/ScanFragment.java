@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -413,8 +414,10 @@ public class ScanFragment extends Fragment
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+
         view.findViewById(R.id.picture).setOnClickListener(this);
-        view.findViewById(R.id.info).setOnClickListener(this);
+        view.findViewById(R.id.picture_preview).setOnClickListener(this);
+
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 
@@ -422,16 +425,9 @@ public class ScanFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Calendar cal = Calendar.getInstance();
-        String time_filename = cal.getTime().toString();
 
-        SharedPreferences spf = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor spf_edit = spf.edit();
 
-        spf_edit.putString("File_Name", time_filename);
-        spf_edit.commit();
-
-        mFile = new File(getActivity().getExternalFilesDir(null), time_filename+".jpg");
+        //mFile = new File(getActivity().getExternalFilesDir(null), time_filename+".jpg");
     }
 
     @Override
@@ -634,6 +630,7 @@ public class ScanFragment extends Fragment
                 mImageReader.close();
                 mImageReader = null;
             }
+
         } catch (InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
         } finally {
@@ -659,6 +656,7 @@ public class ScanFragment extends Fragment
             mBackgroundThread.join();
             mBackgroundThread = null;
             mBackgroundHandler = null;
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -761,6 +759,18 @@ public class ScanFragment extends Fragment
      * Initiate a still image capture.
      */
     private void takePicture() {
+
+        Calendar cal = Calendar.getInstance();
+        String time_filename = ""+cal.getTimeInMillis();
+
+        SharedPreferences spf = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor spf_edit = spf.edit();
+
+        spf_edit.putString("File_Name", time_filename);
+        spf_edit.commit();
+
+        mFile = new File(getActivity().getExternalFilesDir(null), time_filename+".jpg");            // 3K X 4K
+
         lockFocus();
     }
 
@@ -882,18 +892,18 @@ public class ScanFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.picture: {
+
                 takePicture();
+
                 break;
             }
-            case R.id.info: {
-                Activity activity = getActivity();
-                if (null != activity) {
-                    new AlertDialog.Builder(activity)
-                            .setMessage(R.string.intro_message)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-                }
-                break;
+
+            case R.id.picture_preview: {
+
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, ViewFragment.newInstance())
+                        .commit();
+
             }
         }
     }
@@ -1025,5 +1035,4 @@ public class ScanFragment extends Fragment
                     .create();
         }
     }
-
 }
