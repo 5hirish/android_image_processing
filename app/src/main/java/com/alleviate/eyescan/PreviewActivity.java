@@ -172,6 +172,9 @@ public class PreviewActivity extends AppCompatActivity {
         return resizedBitmap;
     }
 
+    // who=null, request=1, result=0, data=Intent
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -179,8 +182,13 @@ public class PreviewActivity extends AppCompatActivity {
         if (requestCode == CROP_PIC_REQUEST_CODE) {
             if (data != null) {
                 Bundle extras = data.getExtras();
-                bitmap = extras.getParcelable("data");
-                img_view.setImageBitmap(scale_bitmap(bitmap));
+
+                if (extras != null){
+
+                    bitmap = extras.getParcelable("data");
+                    img_view.setImageBitmap(scale_bitmap(bitmap));
+                }
+
             }
         }
 
