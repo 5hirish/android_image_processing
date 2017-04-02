@@ -20,11 +20,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +45,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         img_clip = (ImageView)findViewById(R.id.img_clip);
+
+        TextView tv_date = (TextView) findViewById(R.id.tv_date);
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+        tv_date.setText(sdf.format(cal.getTime()));
+
+        SharedPreferences spf = getSharedPreferences("Config", Context.MODE_PRIVATE);
+
+        TextView tv_sup = (TextView)findViewById(R.id.tv_sup_name);
+        TextView tv_proj = (TextView)findViewById(R.id.tv_proj);
+        TextView tv_add = (TextView)findViewById(R.id.tv_add);
+
+        tv_sup.setText(spf.getString("Sup_Name", "Set Options"));
+        tv_proj.setText(spf.getString("Proj_Name", "Set Options"));
+
+        if (spf.getString("Vill_Name", "Set Options").equals("Set Options")){
+            tv_add.setText("Set Options");
+        }else {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(spf.getString("Vill_Name", "Set Options")+"\n");
+            stringBuilder.append(spf.getString("Tal", "Set Options")+" - ");
+            stringBuilder.append(spf.getString("Dist", "Set Options")+"\n");
+            stringBuilder.append(spf.getString("State", "Set Options"));
+            tv_add.setText(stringBuilder.toString());
+        }
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
@@ -76,7 +104,63 @@ public class MainActivity extends AppCompatActivity {
         edit_config.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Click",Toast.LENGTH_SHORT).show();
+
+                Intent in = new Intent(MainActivity.this, ConfigActivity.class);
+                startActivity(in);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        img_clip = (ImageView)findViewById(R.id.img_clip);
+
+        TextView tv_date = (TextView) findViewById(R.id.tv_date);
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+        tv_date.setText(sdf.format(cal.getTime()));
+
+        SharedPreferences spf = getSharedPreferences("Config", Context.MODE_PRIVATE);
+
+        TextView tv_sup = (TextView)findViewById(R.id.tv_sup_name);
+        TextView tv_proj = (TextView)findViewById(R.id.tv_proj);
+        TextView tv_add = (TextView)findViewById(R.id.tv_add);
+
+        tv_sup.setText(spf.getString("Sup_Name", "Set Options"));
+        tv_proj.setText(spf.getString("Proj_Name", "Set Options"));
+
+        if (spf.getString("Vill_Name", "Set Options").equals("Set Options")){
+            tv_add.setText("Set Options");
+        }else {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(spf.getString("Vill_Name", "Set Options")+"\n");
+            stringBuilder.append(spf.getString("Tal", "Set Options")+" - ");
+            stringBuilder.append(spf.getString("Dist", "Set Options")+"\n");
+            stringBuilder.append(spf.getString("State", "Set Options"));
+            tv_add.setText(stringBuilder.toString());
+        }
+
+        Button camera_init = (Button) findViewById(R.id.init_camera);
+        camera_init.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dispatchTakePictureIntent();
+
+            }
+        });
+
+        CardView edit_config = (CardView) findViewById(R.id.card_view_config);
+        edit_config.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent in = new Intent(MainActivity.this, ConfigActivity.class);
+                startActivity(in);
             }
         });
 

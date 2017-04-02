@@ -16,15 +16,14 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         card_view:cardBackgroundColor="#FFF"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="8dp">
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/rla"
-            android:padding="16dp">
+            android:id="@+id/rla">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,19 +39,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
                 android:id="@+id/tv_sup_name"
-                android:layout_centerHorizontal="true"
                 android:text="Supervisor Name"/>
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:id="@+id/tv_proj"
+                android:textStyle="bold"
+                android:layout_below="@+id/tv_sup_name"
+                android:text="Project"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/tv_add"
-                android:layout_below="@+id/tv_sup_name"
+                android:layout_below="@+id/tv_proj"
                 android:text="Address"/>
 
         </RelativeLayout>

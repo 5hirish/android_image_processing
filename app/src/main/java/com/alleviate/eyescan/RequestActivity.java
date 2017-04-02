@@ -73,6 +73,6 @@ public class RequestActivity extends AppCompatActivity {
 
     public void showResponse(String response) {
 
-        textView.setText(response);
+        textView.setText("Success !");
     }
 }

@@ -1,9 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16sp"
     tools:context="com.alleviate.eyescan.ConfigActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:text="Date" />
+
+    <EditText
+        android:id="@+id/et_sup_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Supervisor Name"
+        android:layout_below="@+id/tv_date"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/lab_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/et_sup_name"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:text="State" />
+
+    <Spinner
+        android:id="@+id/sp_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_alignBottom="@+id/lab_state"
+        android:layout_toEndOf="@+id/lab_state" />
+
+    <TextView
+        android:id="@+id/lab_dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/sp_state"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:text="Dist" />
+
+    <Spinner
+        android:id="@+id/sp_dist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_alignBottom="@+id/lab_dist"
+        android:layout_toEndOf="@+id/lab_dist" />
+
+    <TextView
+        android:id="@+id/lab_tal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/sp_dist"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:text="Tal" />
+
+    <Spinner
+        android:id="@+id/sp_tal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_alignBottom="@+id/lab_tal"
+        android:layout_toEndOf="@+id/lab_tal" />
+
+    <EditText
+        android:id="@+id/et_vill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Village"
+        android:layout_below="@+id/sp_tal"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:id="@+id/et_project"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Project"
+        android:layout_below="@+id/et_vill"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp" />
+
+</RelativeLayout>
