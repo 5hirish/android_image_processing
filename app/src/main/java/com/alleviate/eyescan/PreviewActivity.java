@@ -72,6 +72,8 @@ public class PreviewActivity extends AppCompatActivity {
 
                 Intent in = new Intent(getApplicationContext(), RequestActivity.class);
                 startActivity(in);
+
+                finish();
             }
         });
 
