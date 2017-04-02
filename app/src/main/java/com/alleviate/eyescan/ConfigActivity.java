@@ -135,7 +135,16 @@ public class ConfigActivity extends AppCompatActivity {
                 spf_edit.putString("Dist", dist);
                 spf_edit.putString("Tal", tal);
 
-                spf_edit.commit();
+                if (et_sup.getText().toString().isEmpty() || et_vill.getText().toString().isEmpty() || et_proj.getText().toString().isEmpty()) {
+
+                    Toast.makeText(getApplicationContext(), "Empty Details...", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    spf_edit.commit();
+
+                }
+
+
 
                 Toast.makeText(getApplicationContext(), "Details Saved", Toast.LENGTH_SHORT).show();
 
