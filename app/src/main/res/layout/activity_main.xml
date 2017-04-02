@@ -3,8 +3,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context="com.alleviate.eyescan.MainActivity">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        card_view:cardBackgroundColor="#FFF"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/rla"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_margin="10dp"
+                android:id="@+id/tv_date"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:text="Date"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/tv_sup_name"
+                android:layout_centerHorizontal="true"
+                android:text="Supervisor Name"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/tv_add"
+                android:layout_below="@+id/tv_sup_name"
+                android:text="Address"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
 
     <ImageView
         android:layout_width="200dp"
@@ -13,16 +67,17 @@
         android:layout_gravity="center"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
+        android:src="@drawable/eye"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_above="@+id/init_camera"
+        android:layout_marginBottom="30dp"/>
 
     <Button
         android:id="@+id/init_camera"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Scan Iris"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

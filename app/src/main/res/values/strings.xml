@@ -2,19 +2,31 @@
     <string name="app_name">EyeScan</string>
     <string name="picture">Picture</string>
     <string name="description_info">Info</string>
-    <string name="request_permission">This sample needs camera permission.</string>
-    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
-    <string name="intro_message">
-        <![CDATA[
+    <string name="request_permission">Camera permission needed.</string>
 
+    <string-array name="in_states">
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Maharashtra</item>
+    </string-array>
 
-            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
-            you can display camera preview and take pictures.
+    <string-array name="mh_dist">
+        <item>Ahmednagar</item>
+        <item>Akola</item>
+        <item>Amravati</item>
+        <item>Aurangabad</item>
+        <item>Beed</item>
+    </string-array>
 
+    <string-array name="tal_ahmed">
+        <item>Akole</item>
+        <item>Jamkhed</item>
+        <item>Karjat</item>
+        <item>Kopargaon</item>
+        <item>Sangamner</item>
+    </string-array>
 
-        ]]>
-    </string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
