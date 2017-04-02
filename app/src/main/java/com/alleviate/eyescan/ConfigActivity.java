@@ -46,7 +46,7 @@ public class ConfigActivity extends AppCompatActivity {
         adapter_states.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_state.setAdapter(adapter_states);
 
-        adapter_dist = ArrayAdapter.createFromResource(getApplicationContext(), R.array.mh_dist, android.R.layout.simple_spinner_item);
+        adapter_dist = ArrayAdapter.createFromResource(this, R.array.mh_dist, android.R.layout.simple_spinner_item);
         adapter_dist.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_dist.setAdapter(adapter_dist);
 
@@ -57,7 +57,7 @@ public class ConfigActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
 
                 state_pos = position;
                 state = sp_state.getItemAtPosition(position).toString();
