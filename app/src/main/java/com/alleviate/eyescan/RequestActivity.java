@@ -1,5 +1,7 @@
 package com.alleviate.eyescan;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +23,7 @@ import retrofit2.Response;
 public class RequestActivity extends AppCompatActivity {
 
     private APIService mAPIService;
-    TextView textView;
+    TextView textView, tv_count;
 
 
     @Override
@@ -30,6 +32,14 @@ public class RequestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         textView = (TextView) findViewById(R.id.textView);
+        tv_count = (TextView) findViewById(R.id.count);
+
+        SharedPreferences spf = getSharedPreferences("Config", Context.MODE_PRIVATE);
+
+        int count = spf.getInt("Attend",0);
+
+        tv_count.setText("Total Workers today "+count);
+
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -74,5 +84,17 @@ public class RequestActivity extends AppCompatActivity {
     public void showResponse(String response) {
 
         textView.setText("Success !");
+
+        SharedPreferences spf = getSharedPreferences("Config", Context.MODE_PRIVATE);
+
+        int count = spf.getInt("Attend",0);
+
+        SharedPreferences.Editor spf_edit = spf.edit();
+        count = count + 1;
+
+        spf_edit.putInt("Attend", count);
+        spf_edit.commit();
+
+        tv_count.setText("Total Workers today "+count);
     }
 }
