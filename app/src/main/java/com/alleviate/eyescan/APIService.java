@@ -21,4 +21,8 @@ public interface APIService {
     @Multipart
     //@FormUrlEncoded
     Call<ResponseBody> upload_image(@Part MultipartBody.Part image, @Part("name") RequestBody name);
+
+    @POST("/result/")
+    //@FormUrlEncoded
+    Call<ScanResp> req_res(@Body ScanResp request);
 }

@@ -10,6 +10,12 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 
 import okhttp3.MediaType;
@@ -67,8 +73,11 @@ public class RequestActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()) {
 
-                    showResponse(response.body().toString());
+                    showResponse();
+
                     Log.i("Response", "Post submitted to API." + response.body().toString());
+
+                    getResult();
                 }
             }
 
@@ -79,9 +88,33 @@ public class RequestActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
-    public void showResponse(String response) {
+    public void getResult(){
+        ScanResp ptr = new ScanResp();
+        ptr.setPercent(0.0);
+
+        mAPIService.req_res(ptr).enqueue(new Callback<ScanResp>() {
+            @Override
+            public void onResponse(Call<ScanResp> call, Response<ScanResp> response) {
+
+                if(response.isSuccessful()) {
+
+                    showResponse(response.body().getPercent());
+                    Log.i("Response", "Post submitted to API." + response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ScanResp> call, Throwable t) {
+                Log.e("Request", "Unable to submit post to API. :: "+t.toString());
+            }
+        });
+    }
+
+    public void showResponse() {
 
         textView.setText("Success !");
 
@@ -96,5 +129,12 @@ public class RequestActivity extends AppCompatActivity {
         spf_edit.commit();
 
         tv_count.setText("Total Workers today "+count);
+
+    }
+
+    public void showResponse(Double response) {
+
+        TextView tv_match = (TextView)findViewById(R.id.match);
+        tv_match.setText(response+"% match");
     }
 }

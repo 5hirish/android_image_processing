@@ -23,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -109,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
-
     }
 
     @Override
